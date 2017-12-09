@@ -1,0 +1,46 @@
+name: github.com/opspec-pkgs/dockercloud.swarm.stack.deploy
+description: deploys a stack to a dockercloud swarm
+inputs:
+  dockerUsername:
+    string:
+      description: docker username
+  dockerPassword:
+    string:
+      description: docker password
+      isSecret: true
+  swarm:
+    string:
+      description: swarm to deploy to in format "ORG_OR_USER_NAME/SWARM_NAME"
+  stackName:
+    string:
+      description: name of stack being deployed
+  stackFile:
+    file:
+      description: >
+        definition of stack being deployed in either [compose](https://docs.docker.com/compose/compose-file/) or
+        [dab](https://docs.docker.com/compose/bundles/) format
+  stackFileType:
+    string:
+      description: type of the provided stackFile
+      constraints: { enum: [compose, dab]}
+      default: compose
+  prune:
+    string:
+      description: prune services no longer referenced by stackFile
+      constraints: { enum: ['true', 'false']}
+      default: 'false'
+version: 1.0.0
+run:
+  container:
+    image: { ref: 'opspecpkgs/dockercloud.swarm.stack.deploy:1.0.0' }
+    files:
+      /cmd.sh:
+      /stackFile: $(stackFile)
+    cmd: [ /cmd.sh ]
+    envVars:
+      DOCKER_USER: $(dockerUsername)
+      DOCKER_PASS: $(dockerPassword)
+      SWARM_NAME: $(swarm)
+      stackName:
+      stackFileType:
+      prune:
