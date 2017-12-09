@@ -11,24 +11,24 @@ inputs:
   swarm:
     string:
       description: swarm to deploy to in format "ORG_OR_USER_NAME/SWARM_NAME"
-  stackName:
-    string:
-      description: name of stack being deployed
   stackFile:
     file:
       description: >
         definition of stack being deployed in either [compose](https://docs.docker.com/compose/compose-file/) or
         [dab](https://docs.docker.com/compose/bundles/) format
-  stackFileType:
+  stackName:
     string:
-      description: type of the provided stackFile
-      constraints: { enum: [compose, dab]}
-      default: compose
+      description: name of stack being deployed
   prune:
     string:
       description: prune services no longer referenced by stackFile
       constraints: { enum: ['true', 'false']}
       default: 'false'
+  stackFileType:
+    string:
+      description: type of the provided stackFile
+      constraints: { enum: [compose, dab]}
+      default: compose
 version: 1.0.0
 run:
   container:

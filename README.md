@@ -29,9 +29,11 @@ op:
     dockerUsername:
     dockerPassword:
     swarm:
-    networkName:
+    stackFile:
+    stackName:
     # begin optional args
-    networkDriver:
+    prune:
+    stackFileType:
     # end optional args
 ```
 
