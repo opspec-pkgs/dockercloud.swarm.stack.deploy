@@ -1,35 +1,20 @@
 name: build
 description: builds the package
 inputs:
-  version:
-    string:
-      constraints: { format: semver }
-      default: 0.0.0
-  pkg:
+  srcDir:
     dir:
       default: .
 outputs:
-  imageTar:
-    file:
-      description: tar of the built image
+  srcDir:
+    dir: {}
 run:
   serial:
     - op:
         pkg: { ref: test }
-        inputs: { pkg }
-    - container:
-        image: { ref: 'dockercloud/client:0.4.1' }
-        cmd:
-          - sh
-          - -ce
-          # copy binary & certs out of image to context
-          - cp /client /ca.pem /context
-        dirs:
-          /context: $(context)
+        inputs: { srcDir }
     - op:
-        pkg: { ref: github.com/opspec-pkgs/docker.image.build#2.0.0 }
+        pkg: { ref: github.com/opspec-pkgs/_.pkg.bootstrap#1.0.0 }
         inputs:
-          context:
-          dockerfile: $(/Dockerfile)
-          imageName: 'opspecpkgs/dockercloud.swarm.stack.deploy:$(version)'
-        outputs: { imageTar }
+          srcDir:
+        outputs:
+          srcDir:
